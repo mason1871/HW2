@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <cmath>
+#include <random>
+#include <iomanip>
+#include <chrono>
+#include <vector>
+#include <list>
+
+using namespace std;
+
+int main()
+{
+    //Monte Carlo Method
+    
+    float ntotal, Nc=0, n=0, a, b;
+    float pi;
+    cout<<"Select number of points to approxiamte pi ->";
+    //Input number of points wanted to estimate pi
+    cin>>ntotal;
+    //Create random number device
+    random_device rd;
+    mt19937 gen(rd());
+    while (n<ntotal)
+    {
+        //Specify intervals for x and y and have computer pick values
+        uniform_real_distribution <double> x(0,1);
+        uniform_real_distribution <double> y(0,1);
+        //assign a and b to our random generated numbers
+        a=x(gen);
+        b=y(gen);
+        //determine if a^2+b^2 is within unit circle
+        if((pow(a,2)+pow(b,2))<=1)
+        {
+            Nc++;
+        }
+        //Increment n
+        n++;
+    }
+    pi=((4*Nc)/ntotal);
+    cout<<"The approximation of pi for "<<ntotal<< " points is "<<setprecision(5)<<pi<<endl;
+    
+    //Measuring Time
+    
+    //Get starting time for vector
+    auto start = std::chrono::high_resolution_clock::now();
+    int n1, i;
+    vector<int> v;
+    cin>>n1;
+    for(i=n1; i>0; i--)
+    {
+        v.push_back(i);
+    }
+    
+    //Get stopping time for vector
+    auto stop = chrono::high_resolution_clock::now();
+    //Find the duration for vector
+    auto duration = chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    //Print execution time for vector
+    cout<<"Time taken by Vector function: "<<duration.count()<<" microseconds"<<endl;
+    
+    //Get starting time for list
+    auto start1 = std::chrono::high_resolution_clock::now();
+    list<int> l;
+    for(i=n1; i>0; i--)
+    {
+        l.push_back(i);
+    }
+    
+    //Get stopping time for list
+    auto stop1 = chrono::high_resolution_clock::now();
+    //Find the duration for list
+    auto duration1 = chrono::duration_cast<std::chrono::microseconds>(stop1 - start1);
+    //Print execution time for list
+    cout<<"Time taken by List function: "<<duration1.count()<<" microseconds"<<endl;
+    
+    return 0;
+}
